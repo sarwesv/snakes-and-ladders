@@ -13,13 +13,14 @@ export class BoardMesh {
   private createBoard(): void {
     const boardGeometry = new THREE.PlaneGeometry(BOARD_COLS * SQUARE_SIZE, BOARD_ROWS * SQUARE_SIZE);
     const boardMaterial = new THREE.MeshPhongMaterial({
-      color: 0xf5e6d3,
+      color: 0xe8d7c3,
       shininess: 30,
     });
 
     const boardMesh = new THREE.Mesh(boardGeometry, boardMaterial);
     boardMesh.receiveShadow = true;
     boardMesh.rotation.x = -Math.PI / 2;
+    boardMesh.position.y = -0.01;
     this.group.add(boardMesh);
 
     this.createSquares();
