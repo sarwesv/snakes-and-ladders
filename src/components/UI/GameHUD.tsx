@@ -2,6 +2,7 @@ import React from 'react';
 import { PlayerIndicator } from './PlayerIndicator';
 import { AudioControls } from './AudioControls';
 import { DiceRoller } from './DiceRoller';
+import { Board2D } from '../Game/Board2D';
 import { DiceMesh } from '../../three/DiceMesh';
 import { useGameStore } from '../../game/store';
 
@@ -14,20 +15,27 @@ export const GameHUD: React.FC<GameHUDProps> = ({ diceMesh, onRoll }) => {
   const winner = useGameStore((state) => state.winner);
 
   return (
-    <div className="fixed inset-0 pointer-events-none flex flex-col justify-between p-6">
-      {/* Top Left - Player Indicator */}
-      <div className="pointer-events-auto w-80">
-        <PlayerIndicator />
+    <div className="fixed inset-0 pointer-events-none flex flex-col justify-between">
+      <div className="flex flex-col justify-between h-full p-6">
+        {/* Top Left - Player Indicator */}
+        <div className="pointer-events-auto w-80">
+          <PlayerIndicator />
+        </div>
+
+        {/* Top Right - Audio Controls */}
+        <div className="pointer-events-auto ml-auto">
+          <AudioControls />
+        </div>
+
+        {/* Bottom Center - Dice Roller */}
+        <div className="pointer-events-auto self-center">
+          <DiceRoller diceMesh={diceMesh} onRoll={onRoll} />
+        </div>
       </div>
 
-      {/* Top Right - Audio Controls */}
-      <div className="pointer-events-auto ml-auto">
-        <AudioControls />
-      </div>
-
-      {/* Bottom Center - Dice Roller */}
-      <div className="pointer-events-auto self-center">
-        <DiceRoller diceMesh={diceMesh} onRoll={onRoll} />
+      {/* Right Side - Board 2D */}
+      <div className="pointer-events-auto fixed right-0 top-0 h-full">
+        <Board2D />
       </div>
 
       {/* Win Overlay */}
