@@ -3,6 +3,7 @@ import { useGameStore } from '../../game/store';
 import { BoardRenderer } from './BoardRenderer';
 import { GameSetup } from './GameSetup';
 import { GameHUD } from '../UI/GameHUD';
+import { SplashScreen } from './SplashScreen';
 import { AudioManager } from '../../audio/AudioManager';
 import { BoardLogic } from '../../game/BoardLogic';
 import { DiceMesh } from '../../three/DiceMesh';
@@ -18,13 +19,19 @@ export const GameContainer: React.FC = () => {
   const nextTurn = useGameStore((state) => state.nextTurn);
   const addMove = useGameStore((state) => state.addMove);
 
-  const [showSetup, setShowSetup] = useState(true);
+  const [showSplash, setShowSplash] = useState(true);
+  const [showSetup, setShowSetup] = useState(false);
   const [diceMesh, setDiceMesh] = useState<DiceMesh | null>(null);
   const audioManagerRef = useRef<AudioManager | null>(null);
 
   useEffect(() => {
     audioManagerRef.current = new AudioManager();
   }, []);
+
+  const handleSplashComplete = () => {
+    setShowSplash(false);
+    setShowSetup(true);
+  };
 
   const handleGameStart = () => {
     setShowSetup(false);
@@ -139,6 +146,10 @@ export const GameContainer: React.FC = () => {
       }
     }, 1500);
   };
+
+  if (showSplash) {
+    return <SplashScreen onComplete={handleSplashComplete} />;
+  }
 
   if (showSetup) {
     return <GameSetup onGameStart={handleGameStart} />;
