@@ -21,43 +21,59 @@ export const BoardRenderer: React.FC<BoardRendererProps> = ({ onDiceReady }) => 
   const playerPositions = useGameStore((state) => state.playerPositions);
 
   useEffect(() => {
-    if (!containerRef.current || players.length === 0) return;
+    console.log('BoardRenderer: useEffect triggered, players:', players.length);
+    if (!containerRef.current || players.length === 0) {
+      console.log('BoardRenderer: Returning early - container or no players');
+      return;
+    }
 
-    const scene = new SceneSetup(containerRef.current);
-    sceneRef.current = scene;
+    try {
+      console.log('BoardRenderer: Starting scene setup');
+      const scene = new SceneSetup(containerRef.current);
+      sceneRef.current = scene;
 
-    const board = new BoardMesh();
-    scene.scene.add(board.group);
+      console.log('BoardRenderer: Adding board');
+      const board = new BoardMesh();
+      scene.scene.add(board.group);
 
-    const pieces = new Map<string, PieceMesh>();
-    players.forEach((player) => {
-      const piece = new PieceMesh(player.id, player.color);
-      piece.setPosition(0);
-      scene.scene.add(piece.mesh);
-      pieces.set(player.id, piece);
-    });
-    piecesRef.current = pieces;
+      console.log('BoardRenderer: Adding player pieces');
+      const pieces = new Map<string, PieceMesh>();
+      players.forEach((player) => {
+        const piece = new PieceMesh(player.id, player.color);
+        piece.setPosition(0);
+        scene.scene.add(piece.mesh);
+        pieces.set(player.id, piece);
+      });
+      piecesRef.current = pieces;
 
-    SNAKES_AND_LADDERS.snakes.forEach((snake) => {
-      const snakeMesh = new SnakeMesh(snake.start, snake.end);
-      scene.scene.add(snakeMesh.mesh);
-    });
+      console.log('BoardRenderer: Adding snakes');
+      SNAKES_AND_LADDERS.snakes.forEach((snake) => {
+        const snakeMesh = new SnakeMesh(snake.start, snake.end);
+        scene.scene.add(snakeMesh.mesh);
+      });
 
-    SNAKES_AND_LADDERS.ladders.forEach((ladder) => {
-      const ladderMesh = new LadderMesh(ladder.start, ladder.end);
-      scene.scene.add(ladderMesh.mesh);
-    });
+      console.log('BoardRenderer: Adding ladders');
+      SNAKES_AND_LADDERS.ladders.forEach((ladder) => {
+        const ladderMesh = new LadderMesh(ladder.start, ladder.end);
+        scene.scene.add(ladderMesh.mesh);
+      });
 
-    const diceMesh = new DiceMesh();
-    scene.scene.add(diceMesh.mesh);
-    diceMeshRef.current = diceMesh;
-    onDiceReady(diceMesh);
+      console.log('BoardRenderer: Adding dice');
+      const diceMesh = new DiceMesh();
+      scene.scene.add(diceMesh.mesh);
+      diceMeshRef.current = diceMesh;
+      onDiceReady(diceMesh);
 
-    const animate = () => {
-      requestAnimationFrame(animate);
-      scene.render();
-    };
-    animate();
+      console.log('BoardRenderer: Starting animation loop');
+      const animate = () => {
+        requestAnimationFrame(animate);
+        scene.render();
+      };
+      animate();
+      console.log('BoardRenderer: Setup complete');
+    } catch (error) {
+      console.error('BoardRenderer: Error during setup', error);
+    }
 
     const handleResize = () => {
       if (sceneRef.current) {
@@ -68,7 +84,9 @@ export const BoardRenderer: React.FC<BoardRendererProps> = ({ onDiceReady }) => 
 
     return () => {
       window.removeEventListener('resize', handleResize);
-      scene.dispose();
+      if (sceneRef.current) {
+        sceneRef.current.dispose();
+      }
     };
   }, [players, onDiceReady]);
 

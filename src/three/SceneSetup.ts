@@ -7,23 +7,32 @@ export class SceneSetup {
   renderer: THREE.WebGLRenderer;
 
   constructor(container: HTMLElement) {
-    this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(0xf5e6d3);
-    this.scene.fog = new THREE.Fog(0xf5e6d3, 50, 100);
+    try {
+      console.log('SceneSetup: Initializing...');
+      this.scene = new THREE.Scene();
+      this.scene.background = new THREE.Color(0x1a1a1a);
+      console.log('SceneSetup: Scene created');
 
-    this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const startCameraPos = getCameraPosition(1);
-    this.camera.position.set(startCameraPos.x, startCameraPos.y, startCameraPos.z);
-    this.camera.lookAt(5, 0.5, 5);
+      this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+      const startCameraPos = getCameraPosition(1);
+      console.log('SceneSetup: Camera position:', startCameraPos);
+      this.camera.position.set(startCameraPos.x, startCameraPos.y, startCameraPos.z);
+      this.camera.lookAt(5, 0.5, 5);
 
-    this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
-    this.renderer.setPixelRatio(window.devicePixelRatio);
-    this.renderer.shadowMap.enabled = true;
-    container.appendChild(this.renderer.domElement);
+      this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+      this.renderer.setSize(window.innerWidth, window.innerHeight);
+      this.renderer.setPixelRatio(window.devicePixelRatio);
+      this.renderer.shadowMap.enabled = true;
+      container.appendChild(this.renderer.domElement);
+      console.log('SceneSetup: Renderer created and added to DOM');
 
-    this.setupLighting();
-    this.setupEventListeners();
+      this.setupLighting();
+      this.setupEventListeners();
+      console.log('SceneSetup: Initialization complete');
+    } catch (error) {
+      console.error('SceneSetup: Error during initialization', error);
+      throw error;
+    }
   }
 
   private setupLighting(): void {
