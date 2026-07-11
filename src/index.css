@@ -1,0 +1,80 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  font-family: 'Helvetica', 'Arial', sans-serif;
+}
+
+body {
+  background-color: #f5e6d3;
+  color: #2c1810;
+  overflow: hidden;
+}
+
+/* Vintage styling */
+button:not(:disabled) {
+  cursor: pointer;
+}
+
+input[type="range"] {
+  cursor: pointer;
+}
+
+input[type="text"] {
+  font-family: 'Georgia', serif;
+}
+
+/* Film grain effect */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%229%22 numOctaves=%224%22 result=%22noise%22 /%3E%3C/filter%3E%3Crect width=%22200%22 height=%22200%22 fill=%22%23000%22 opacity=%220.03%22 filter=%22url%28%23noiseFilter%29%22 /%3E%3C/svg%3E');
+  z-index: 9999;
+  opacity: 0.5;
+}
+
+/* Smooth scrolling for move history */
+.move-history {
+  scroll-behavior: smooth;
+}
+
+/* Retro button styling */
+button {
+  font-family: 'Georgia', serif;
+  transition: all 0.3s ease;
+}
+
+button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* Input styling */
+input[type="text"] {
+  transition: all 0.3s ease;
+  border-color: #3e2723;
+}
+
+input[type="text"]:focus {
+  outline: none;
+  border-color: #d84315;
+  box-shadow: 0 0 0 3px rgba(216, 67, 21, 0.1);
+}
