@@ -36,19 +36,19 @@ export class SceneSetup {
   }
 
   private setupLighting(): void {
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.0);
     this.scene.add(ambientLight);
 
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 1.0);
-    directionalLight.position.set(5, 10, 5);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    directionalLight.position.set(5, 15, 5);
     directionalLight.castShadow = true;
-    directionalLight.shadow.mapSize.width = 2048;
-    directionalLight.shadow.mapSize.height = 2048;
+    directionalLight.shadow.mapSize.width = 1024;
+    directionalLight.shadow.mapSize.height = 1024;
     directionalLight.shadow.camera.far = 100;
     this.scene.add(directionalLight);
 
-    const pointLight = new THREE.PointLight(0xffcc99, 0.6);
-    pointLight.position.set(5, 8, 5);
+    const pointLight = new THREE.PointLight(0xffaa88, 0.3);
+    pointLight.position.set(5, 10, 5);
     this.scene.add(pointLight);
   }
 
